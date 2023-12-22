@@ -1,19 +1,21 @@
-import os
-
 import PySimpleGUI as sg
-import pandas as pd
-import os
 
-data = pd.read_csv(os.path.abspath(os.path.join(os.getcwd(), 'app', 'assets', 'ejemplos.csv')))
-columns = data.columns.values.tolist()
-values = data.values.tolist()
+from back.queries import get_all_customers
 
-tbl1 = sg.Table(values=values, headings=columns,
-                auto_size_columns=True,
-                display_row_numbers=True,
-                justification='center', key='-TABLE-',
-                selected_row_colors='red on yellow',
-                enable_events=True,
-                expand_x=True,
-                expand_y=True,
-                enable_click_events=True)
+
+class CustomersTable:
+    def __init__(self):
+        data = get_all_customers()
+        self.columns = data.columns.values.tolist()
+        self.values = data.values.tolist()
+
+    def create_window(self):
+        return sg.Table(values=self.values, headings=self.columns,
+                        auto_size_columns=True,
+                        display_row_numbers=True,
+                        justification='center', key='-TABLE-',
+                        selected_row_colors='red on yellow',
+                        enable_events=True,
+                        expand_x=True,
+                        expand_y=True,
+                        enable_click_events=True)
